@@ -35,6 +35,7 @@ export const postRouter = createRouter().mutation("createPost", {
         });
         return {
           user,
+          post,
         };
       } catch (error) {
         return null;

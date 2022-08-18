@@ -139,7 +139,20 @@ export const authRouter = createRouter()
   })
   .query("allUser", {
     async resolve({ ctx }) {
-      const users = await ctx.prisma.user.findMany();
+      const users = await ctx.prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          posts: {
+            select: {
+              id: true,
+              title: true,
+              content: true,
+            },
+          },
+        },
+      });
       return {
         users,
       };

@@ -3,7 +3,7 @@ import { trpc } from "@/utils/trpc";
 
 const CreatePost = () => {
   const postMutatiton = trpc.useMutation(["post.createPost"]);
-  const { data } = trpc.useQuery(["post.getPost", { id: 4 }]);
+  const { data } = trpc.useQuery(["post.getPost", { id: 2 }]);
   const { data: users } = trpc.useQuery(["auth.allUser"]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

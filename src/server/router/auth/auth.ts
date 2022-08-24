@@ -50,9 +50,10 @@ export const authRouter = createRouter()
             user,
           };
         }
-        if (!user) {
-          throw new Error("User not found");
+        return {
+          message: "Invalid user credentials"
         }
+        
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           return {

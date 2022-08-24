@@ -1,6 +1,7 @@
 import { createRouter } from "../context";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 interface JwtPayload {
   id: string;
@@ -44,16 +45,34 @@ export const postRouter = createRouter()
       }
     },
   })
-  .query("getPost", {
+  .query("getPostByAuthor", {
     input: z.object({
-      id: z.number(),
+      id: z.string(),
     }),
     async resolve({ input, ctx }) {
       const posts = await ctx.prisma.post.findMany({
         where: {
-          authorId: input.id,
+          authorId: +input.id,
         },
       });
       return posts;
     },
-  });
+  }).query('getPostById',{
+    input:z.object({
+      id:z.string()
+    }),
+    async resolve({input,ctx}){
+      const post = await ctx.prisma.post.findUnique({
+        where:{
+          id: +input.id,
+        },
+      })
+      if (!post) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `No post with id '${input.id}'`,
+        });
+      }
+      return post;
+    }
+  })

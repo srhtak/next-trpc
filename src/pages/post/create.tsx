@@ -3,7 +3,6 @@ import { trpc } from "@/utils/trpc";
 
 const CreatePost = () => {
   const postMutatiton = trpc.useMutation(["post.createPost"]);
-  const { data } = trpc.useQuery(["post.getPost", { id: 2 }]);
   const { data: users } = trpc.useQuery(["auth.allUser"]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -25,8 +24,6 @@ const CreatePost = () => {
   const getPost = async () => {
     try {
       const usersResponse = users;
-      const postResponse = data;
-      console.log(postResponse);
       console.log(usersResponse);
     } catch (error) {
       if (error instanceof Error && error != undefined) {

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { trpc } from "@/utils/trpc";
+import { util } from "vue/types/umd";
 
 const CreatePost = () => {
-  const postMutatiton = trpc.useMutation(["post.createPost"]);
+  const utils = trpc.useContext()
   const { data: users } = trpc.useQuery(["auth.allUser"]);
+  const postsQuery = trpc.useQuery(["post.allPosts"])
+  const postMutatiton = trpc.useMutation("post.createPost",{
+    async onSuccess(){
+        await utils.invalidateQueries(["post.allPosts"])
+    }
+  });
+  
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,8 +40,8 @@ const CreatePost = () => {
     }
   };
   return (
-    <div className="h-screen 100vw flex justify-center items-center">
-      <form onSubmit={handleSubmit}>
+    <div className="h-screen 100vw">
+      <form  onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Title"
@@ -46,7 +54,12 @@ const CreatePost = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      <button onClick={getPost}>get Post by Id</button>
+      <button className="inline" onClick={getPost}>get Post by Id</button>
+      <div className="">
+          {postsQuery.isLoading ? "Loading" : postsQuery.data?.map(data => <div key={data.id}>
+            {JSON.stringify(data)}
+          </div>)}
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { createRouter } from "../context";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { resolve } from "path";
 
 interface JwtPayload {
   id: string;
@@ -74,5 +75,11 @@ export const postRouter = createRouter()
         });
       }
       return post;
+    }
+  }).query('allPosts',{
+    async resolve({ctx}){
+      const posts = await ctx.prisma.post.findMany({})
+      if(!ctx.req?.cookies) throw new Error('Invalid user creadential')
+      return posts;
     }
   })

@@ -7,7 +7,7 @@ import { getUserFromHeader } from "./auth/userValidate";
 export const createContext = async (opts?: trpcNext.CreateNextContextOptions) => {
   const req = opts?.req;
   const res = opts?.res;
-  const user = await getUserFromHeader(req?.cookies?.token);
+  const user = await getUserFromHeader(req?.cookies?.token as string);
 
   return {
     req,

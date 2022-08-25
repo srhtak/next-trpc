@@ -9,6 +9,12 @@ interface JwtPayload {
 }
 
 export const postRouter = createRouter()
+.middleware(async ({ ctx, next }) => {
+  if (!ctx.user) {
+    throw new Error("User not found");
+  }
+  return next();
+})
   .mutation("createPost", {
     input: z.object({
       title: z.string(),
@@ -78,8 +84,8 @@ export const postRouter = createRouter()
     }
   }).query('allPosts',{
     async resolve({ctx}){
-      const posts = await ctx.prisma.post.findMany({})
       if(!ctx.req?.cookies) throw new Error('Invalid user creadential')
+      const posts = await ctx.prisma.post.findMany({})
       return posts;
     }
   })

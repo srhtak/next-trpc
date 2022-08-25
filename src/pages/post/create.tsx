@@ -39,6 +39,18 @@ const CreatePost = () => {
       }
     }
   };
+
+
+  const getAllPosts = async () => {
+    try {
+      const postsResponse = postsQuery.data;
+      console.log(postsResponse);
+    } catch (error) {
+      if (error instanceof Error && error != undefined) {
+        console.log(error.message);
+      }
+    }
+  }
   return (
     <div className="h-screen 100vw">
       <form  onSubmit={handleSubmit}>
@@ -54,12 +66,15 @@ const CreatePost = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      <button className="inline" onClick={getPost}>get Post by Id</button>
+      <button className="inline bg-green-500" onClick={getPost}>get Post by Id</button>
+      <button className="inline bg-blue-400" onClick={getAllPosts}>get all posts</button>
       <div className="">
           {postsQuery.isLoading ? "Loading" : postsQuery.data?.map(data => <div key={data.id}>
             {JSON.stringify(data)}
           </div>)}
       </div>
+
+     
     </div>
   );
 };

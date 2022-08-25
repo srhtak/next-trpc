@@ -6,10 +6,9 @@ type Prop = {
   mode: string;
 };
 const AuthForm = () => {
-  const [mode, setMode] = useState("Login");
+  const [mode, setMode] = useState("Register");
   const loginMutatiton = trpc.useMutation(["auth.signin"]);
   const registerMutatiton = trpc.useMutation(["auth.signup"]);
-  const { data, isLoading } = trpc.useQuery(["auth.allUser"]);
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");

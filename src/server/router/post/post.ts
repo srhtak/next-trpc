@@ -15,7 +15,7 @@ export const postRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       const token = ctx.req?.cookies?.token;
-      if (!token) return null;
+      if (!token) throw new Error("Invalid user token");
       if (token) {
         let user;
         try {

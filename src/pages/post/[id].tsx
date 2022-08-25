@@ -8,10 +8,9 @@ const PostById = () => {
 
   if (postQuery.error) {
     return (
-      <NextError
-        title={postQuery.error.message}
-        statusCode={postQuery.error.data?.httpStatus ?? 500}
-      />
+     <div className='text-red-500 h-screen w-full flex justify-center items-center'>
+      {postQuery.error.message}
+     </div>
     );
   }
 
@@ -21,11 +20,10 @@ const PostById = () => {
   const { data } = postQuery;
   return (
     <>
-      <h1>{data.title}</h1>
-
-
+      <h1>{postQuery.status === 'success' && data?.title}</h1>
       <h2>Raw data:</h2>
       <pre>{JSON.stringify(data, null, 4)}</pre>
+      
     </>
   );
 };
